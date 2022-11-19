@@ -58,17 +58,17 @@ const BinCard: React.FC<binCardProps> = ({
         ></div>
         <div
           className={`h-20 w-full 
-          ${binsStatus[binId]!.status == "3" ? "bg-red-600" : "bg-slate-300"}
           ${binsStatus[binId]!.status == "2" ? "bg-yellow-600" : "bg-slate-300"}
+          ${binsStatus[binId]!.status == "3" ? "bg-red-600" : "bg-slate-300"}
         `}
         ></div>
         <div
           className={`h-20 w-full 
-          ${binsStatus[binId]!.status == "3" ? "bg-red-600" : "bg-slate-300"}
-          ${binsStatus[binId]!.status == "2" ? "bg-yellow-600" : "bg-slate-300"}
           ${
             binsStatus[binId]!.status == "1" ? "bg-emerald-600" : "bg-slate-300"
           }
+          ${binsStatus[binId]!.status == "2" ? "bg-yellow-600" : "bg-slate-300"}
+          ${binsStatus[binId]!.status == "3" ? "bg-red-600" : "bg-slate-300"}
         `}
         ></div>
       </div>
