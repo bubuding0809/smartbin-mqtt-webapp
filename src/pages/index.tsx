@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { env } from "../../src/env/client.mjs";
 import moment from "moment";
 import type { Moment } from "moment";
-import BinCard from "./components/BinCard";
+import BinCard from "../components/BinCard";
 
 const initalizeBins = () => {
   const bins: {

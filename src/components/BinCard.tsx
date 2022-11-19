@@ -2,6 +2,20 @@ import type { MqttClient } from "mqtt";
 import moment from "moment";
 import type { Moment } from "moment";
 
+type binCardProps = {
+  binId: string;
+  binsStatus: {
+    [key: string]: {
+      datetime: Moment | null;
+      status: string;
+    };
+  };
+  mqttClient: MqttClient | null;
+  setMessages: React.Dispatch<
+    React.SetStateAction<{ topic: string; message: string; datetime: Moment }[]>
+  >;
+};
+
 const binStatusMessage: {
   [key: string]: string;
 } = {
@@ -12,7 +26,12 @@ const binStatusMessage: {
   "3": "3/3 Full",
 };
 
-const BinCard = ({ binId, binsStatus, mqttClient, setMessages }: any) => {
+const BinCard: React.FC<binCardProps> = ({
+  binId,
+  binsStatus,
+  mqttClient,
+  setMessages,
+}) => {
   return (
     <div className="flex w-60 flex-shrink-0 flex-col justify-between gap-2 rounded-lg bg-slate-50 p-2 shadow-md">
       <div>
@@ -57,7 +76,7 @@ const BinCard = ({ binId, binsStatus, mqttClient, setMessages }: any) => {
         <button
           className="btn-primary btn-block btn"
           onClick={() => {
-            setMessages((prev: any) => {
+            setMessages((prev) => {
               return [
                 ...prev,
                 {
