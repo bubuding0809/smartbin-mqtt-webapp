@@ -3,7 +3,8 @@ import Head from "next/head";
 import mqtt, { MqttClient } from "mqtt";
 import { useEffect, useRef, useState } from "react";
 import { env } from "../../src/env/client.mjs";
-import moment, { Moment } from "moment";
+import moment from "moment";
+import type { Moment } from "moment";
 import BinCard from "./components/BinCard";
 
 const initalizeBins = () => {
@@ -64,7 +65,7 @@ const Home: NextPage = () => {
           const status = payload.split("-")[2] as string;
 
           // Prevent update of invalid binId and status
-          if (!"0123".includes(status) || !"0123".includes(binId)) return;
+          if (!"0123".includes(status) || !"12345".includes(binId)) return;
 
           setBinsStatus((prev) => ({
             ...prev,
@@ -176,6 +177,7 @@ const Home: NextPage = () => {
         <div className="flex w-full gap-2 overflow-x-auto rounded-lg border-4 border-slate-600 bg-[#252525] p-4">
           {Object.keys(binsStatus).map((bin) => (
             <BinCard
+              key={bin}
               binId={bin}
               binsStatus={binsStatus}
               mqttClient={mqttClient}
