@@ -24,6 +24,7 @@ const initalizeBins = () => {
 };
 
 const Home: NextPage = () => {
+  const [isCollectorOnline, setisCollectorOnline] = useState(false);
   const [mqttClient, setMqttClient] = useState<MqttClient | null>(null);
   const [messages, setMessages] = useState<
     { topic: string; message: string; datetime: Moment }[]
@@ -43,6 +44,7 @@ const Home: NextPage = () => {
       console.log("connected");
       client.subscribe("trash_collector_main");
       client.subscribe("trash_collector_sub");
+      client.subscribe("trash_collector_will");
     });
 
     client.on("message", (topic, message) => {
@@ -93,13 +95,18 @@ const Home: NextPage = () => {
           },
         ]);
       }
+
+      if (topic == "trash_collector_will") {
+        setisCollectorOnline(payload === "online");
+      }
     });
 
     setMqttClient(client);
 
     return () => {
       client.unsubscribe("trash_collector_main");
-      client.subscribe("trash_collector_sub");
+      client.unsubscribe("trash_collector_sub");
+      client.unsubscribe("trash_collector_will");
       client.end();
     };
   }, []);
@@ -120,9 +127,18 @@ const Home: NextPage = () => {
       <main className="container mx-auto flex min-h-screen flex-col items-center justify-center gap-2 p-4">
         <div className="flex w-full justify-between">
           <h1>
-            <span className="text-2xl font-bold">SmartBin</span> Dashboard
+            <span className="text-2xl font-bold">SmartBin</span> Dashboard Trash
+            <span
+              className={`ml-2 rounded-full py-1 px-2 ${
+                isCollectorOnline
+                  ? "bg-green-500 text-slate-900"
+                  : "bg-red-500 text-white"
+              }`}
+            >
+              {isCollectorOnline ? "online" : "offline"}
+            </span>
           </h1>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <button
               className="btn w-28 sm:btn-sm md:btn-md"
               onClick={() => {
