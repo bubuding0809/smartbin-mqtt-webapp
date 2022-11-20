@@ -28,6 +28,7 @@ const Test: NextPage = () => {
     client.on("connect", () => {
       console.log("connected");
       client.subscribe("trash_collector_main");
+      client.subscribe("trash_collector_will");
       client.subscribe("trash_collector_sub");
     });
     client.on("message", (topic, message) => {
@@ -45,6 +46,7 @@ const Test: NextPage = () => {
 
     return () => {
       client.unsubscribe("trash_collector_main");
+      client.unsubscribe("trash_collector_will");
       client.unsubscribe("trash_collector_sub");
       client.end();
     };
